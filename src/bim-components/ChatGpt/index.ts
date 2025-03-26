@@ -37,16 +37,9 @@ export class ChatGpt extends OBC.Component{
   modifyDataDile = ()=>{
     if(! this.fileData) return;
     const validENtities = new Set([
-      "IFCPROPERTYSINGLEVALUE",
-      "IFCQUANTITYLENGTH",
-      "IFCQUANTITYAREA",
-      "IFCQUANTITYVOLUME",
-      "IFCSLAB",
-      "IFCWALL",
       "IFCBEAM",
       "IFCPROPERTYSET",
-      "IFCRELDEFINESBYPROPERTIES",
-      "IFCMATERIAL"
+      "IFCWALL"
     ]);
 
     var result = this.fileData.split("\n").filter(line=>{
@@ -75,7 +68,68 @@ export class ChatGpt extends OBC.Component{
       body: JSON.stringify({
         model:"gpt-3.5-turbo",
         messages:[
-          { role:"system",  content:`Based on the given information You should only create the response based on the information given. Information that is not found on the given data should not be presented on the result` },
+          { 
+            role:"system",  
+            content:`Based on the given information, you should generate responses strictly from the provided data. Any information not present in the given data should not be included in the response.
+              Your response must be returned as a single JSON object containing two formats::
+              1. Format for Chart.js (Detailed Format)
+              This format is used to generate the chart and should be structured as follows
+              [
+                {
+                  "expressIds": number[],
+                  "elementType": string,
+                  "color": string
+                }
+              ]
+              expressIds: An array of express IDs for elements that meet the specified conditions.
+              elementType: The name of the IFC element.
+              color: A randomly chosen RGB color for the chart, ensuring that colors are not repeated.
+              For example, if I ask how many elements exist per level in the model, the response should be:
+
+              [
+                {
+                  "expressIds": [123, 456, 789],
+                  "elementType": "Level 3",
+                  "color": "rgb(123,45,56)"
+                },
+                {
+                  "expressIds": [987, 654, 321],
+                  "elementType": "Level 2",
+                  "color": "rgb(200,100,50)"
+                }
+              ]
+              2. Format for HTML Tag (Simplified Format)
+              This is a string containing a short, formatted summary of the data, where each line follows the pattern:
+              "<elementType>: <count> elements"
+
+              Each line should contain the elementType followed by the count of elements in that category.
+              Express IDs and colors are not included in this format.
+              The structure should be simple and easy to read.
+
+              Example Request & Response
+              If I ask:
+              "How many elements per level do I have in the model?"
+              Your response should be:
+
+              {
+              "chartData": [
+                {
+                  "expressIds": [123, 456, 789],
+                  "elementType": "Level 3",
+                  "color": "rgb(123,45,56)"
+                },
+                {
+                  "expressIds": [987, 654, 321],
+                  "elementType": "Level 2",
+                  "color": "rgb(200,100,50)"
+                }
+              ],
+              "htmlSummary": "Level 3: 3 elements\nLevel 2: 3 elements"
+            }
+
+
+              ` 
+          },
           { role: "user", content: `Here is the file content:\n${this.modifyDataDile()}\n\nNow answer this question: ${message}` }
         ]
       })
