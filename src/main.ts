@@ -85,11 +85,11 @@ highlighter.setup({ world });
 highlighter.zoomToSelection = true;
 
 const culler = components.get(OBC.Cullers).create(world);
-culler.threshold = 5;
+//culler.threshold = 5;
 
 world.camera.controls.restThreshold = 0.25;
 world.camera.controls.addEventListener("rest", () => {
-  culler.needsUpdate = true;
+  //culler.needsUpdate = true;
   tilesLoader.cancel = true;
   tilesLoader.culler.needsUpdate = true;
 });
@@ -103,7 +103,7 @@ fragments.onFragmentsLoaded.add(async (model) => {
   if (!model.isStreamed) {
     for (const fragment of model.items) {
       world.meshes.add(fragment.mesh);
-      culler.add(fragment.mesh);
+      //culler.add(fragment.mesh);
     }
   }
 

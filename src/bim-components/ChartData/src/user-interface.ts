@@ -180,8 +180,8 @@ export  function ChartUI(components: OBC.Components){
     <bim-panel-section label="Charts" fixed style="display:flex; justify-content:center; align-items: center;">
       <bim-button @click=${initialize} label="RESTART CHART" icon="mi:add"></bim-button>
       <bim-dropdown name="type" @change=${dropDownOnClick}>
-        <bim-option label="Bar Chart By Type" value="bar"></bim-option>
-        <bim-option label="Doughnut Chart By Level" value ="doughnut"></bim-option>
+        <bim-option label="Elements By Type" value="bar"></bim-option>
+        <bim-option label="Elements By Level" value ="doughnut"></bim-option>
       </bim-dropdown>
       <canvas id="myChart" width="300" height="200"></canvas>
     </bim-panel-section>

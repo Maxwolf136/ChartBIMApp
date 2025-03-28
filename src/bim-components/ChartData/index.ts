@@ -97,7 +97,9 @@ export class ChartData extends OBC.Component {
   getAllEntitiesOfType = async ()=>{
     let data: ChartData[] = [];
     for(var [id,model] of this.fragmentGroup.groups){
-      const walls = await this.getPropertiesOfSpecificType(WEBIFC.IFCWALL, "IfcWall","rgba(255, 0, 0, 0.5)");
+      let walls = await this.getPropertiesOfSpecificType(WEBIFC.IFCWALL, "IfcWall","rgba(255, 0, 0, 0.5)");
+      if(walls.expressIds.length ==0) walls = await this.getPropertiesOfSpecificType(WEBIFC.IFCWALLSTANDARDCASE,"IfcWallStandardCase", "rgba(255, 0, 0, 0.5)");
+      
       const slabs = await this.getPropertiesOfSpecificType(WEBIFC.IFCSLAB, "IfcSlab","rgba(0, 150, 255, 0.5)");
       const beams = await this.getPropertiesOfSpecificType(WEBIFC.IFCBEAM,"IfcBeam","rgba(0, 255, 0, 0.5)");
       data.push(walls);
