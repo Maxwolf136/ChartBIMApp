@@ -1,2 +1,2 @@
 export * from "./AppManager";
-export * from "./ChatGpt"
+export * from "./ChatGpt";
