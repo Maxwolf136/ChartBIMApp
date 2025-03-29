@@ -97,7 +97,7 @@ export class ChartData extends OBC.Component {
       );
       if (!roadOfModel) continue;
       console.log("RoadPart:", roadOfModel);
-// test2
+// test23
 
       for (const [expressId, properties] of Object.entries(roadOfModel)) {
         const pieData: ChartData = {
